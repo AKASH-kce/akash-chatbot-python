@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 import os
 from groq import Groq
+from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 
@@ -69,6 +70,20 @@ Rules:
 
 app = FastAPI()
 
+# CORS Setup
+origins = [
+    "http://localhost:4200",  # Angular dev server
+    "https://akash-chatbot-python.onrender.com"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 class ChatRequest(BaseModel):
     question: str
 
@@ -82,4 +97,3 @@ async def ask_chat(request: ChatRequest):
         ]
     )
     return {"response": response.choices[0].message.content}
-
