@@ -83,7 +83,9 @@ app = FastAPI()
 # CORS Setup
 origins = [
     "http://localhost:4200",  # Angular dev server
-    "https://akash-chatbot-python.onrender.com"
+    "https://akash-chatbot-python.onrender.com",  # backend itself
+    "https://akash-s-portfolio.onrender.com",     # portfolio frontend
+    "https://portfolio-frontend-2-fpt4.onrender.com"  # second frontend
 ]
 
 app.add_middleware(
@@ -93,6 +95,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 class ChatRequest(BaseModel):
     question: str
@@ -107,3 +110,4 @@ async def ask_chat(request: ChatRequest):
         ]
     )
     return {"response": response.choices[0].message.content}
+
